@@ -5,22 +5,37 @@ import HomePage from "./pages/homePage";
 import MoviePage from "./pages/movieDetailsPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import MovieReviewPage from "./pages/movieReviewPage";
-import UpcomingPage from "./pages/upcomingMoviePage";
+import UpcomingMoviesPage from "./pages/upcomingMoviePage";
 import SiteHeader from './components/siteHeader'
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 360000,
+      refetchInterval: 360000, 
+      refetchOnWindowFocus: false
+    },
+  },
+});
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <SiteHeader />
-      <Routes>
-        <Route exact path="/movies/favorites" element={<FavoriteMoviesPage />} />
-        <Route exact path="/movies/upcoming" element={<UpcomingPage />} />
-        <Route path="/movies/:id" element={<MoviePage />} />
-        <Route path="/" element={<HomePage />} />
-        <Route path="*" element={ <Navigate to="/" /> } />
-        <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <SiteHeader />
+        <Routes>
+          <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+          <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+          <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
+          <Route path="/movies/:id" element={<MoviePage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="*" element={ <Navigate to="/" /> } />
+        </Routes>
+      </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 
