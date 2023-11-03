@@ -15,7 +15,11 @@ const UpcomingMoviePage = (props) => {
     <PageTemplate
       title='Upcoming Movies'
       movies={movies}
+      action={(movie) => {
+        return null
+      }}
     />
   );
 };
+
 export default UpcomingMoviePage;
